@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-card">
+    <a href="{{ url_for('index') }}" class="btn btn-outline"
+        style="font-size: 0.875rem; margin-bottom: 1rem; display: inline-block;">&larr; Kembali</a>
+    <h2 style="color: var(--bps-blue); margin-bottom: 2rem; text-align: center;">Kuesioner Survei Kepuasan Masyarakat
+    </h2>
+
+    <form method="POST" action="{{ url_for('input_survey') }}">
+        <div
+            style="background: #f9fafb; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem; border-left: 4px solid var(--bps-blue);">
+            <h3 style="margin-bottom: 1rem; color: var(--text-main);">Data Responden (Sesuai KTP)</h3>
+
+            <div class="form-group">
+                <label class="form-label" for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" class="form-control" placeholder="Masukkan nama Anda">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" placeholder="nama@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="no_hp">No. Handphone / WhatsApp</label>
+                <input type="text" id="no_hp" name="no_hp" class="form-control" placeholder="081234567890" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Jenis Kelamin</label>
+                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                    <label><input type="radio" name="jenis_kelamin" value="Laki-laki" required> Laki-laki</label>
+                    <label><input type="radio" name="jenis_kelamin" value="Perempuan"> Perempuan</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="pendidikan">Pendidikan Terakhir</label>
+                <select id="pendidikan" name="pendidikan" class="form-control" required>
+                    <option value="">-- Pilih Pendidikan --</option>
+                    <option value="SD">SD Kebawah</option>
+                    <option value="SMP">SLTP / Sederajat</option>
+                    <option value="SMA">SLTA / Sederajat</option>
+                    <option value="D1-D3">D1 - D3</option>
+                    <option value="S1">S1</option>
+                    <option value="S2">S2</option>
+                    <option value="S3">S3</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="pekerjaan">Pekerjaan Utama</label>
+                <select id="pekerjaan" name="pekerjaan" class="form-control" required>
+                    <option value="">-- Pilih Pekerjaan --</option>
+                    <option value="PNS/TNI/POLRI">PNS / TNI / POLRI</option>
+                    <option value="Pegawai Swasta">Pegawai Swasta</option>
+                    <option value="Wiraswasta/Pengusaha">Wiraswasta / Pengusaha</option>
+                    <option value="Pelajar/Mahasiswa">Pelajar / Mahasiswa</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="jenis_layanan">Jenis Layanan yang Diterima</label>
+                <select id="jenis_layanan" name="jenis_layanan" class="form-control" required>
+                    <option value="">-- Pilih Layanan --</option>
+                    <option value="Perpustakaan/Konsultasi Statistik">Perpustakaan / Konsultasi Statistik</option>
+                    <option value="Penjualan Publikasi/Data Mikro">Penjualan Publikasi / Data Mikro</option>
+                    <option value="Rekomendasi Kegiatan Statistik">Rekomendasi Kegiatan Statistik</option>
+                </select>
+            </div>
+        </div>
+
+        <div
+            style="background: #fff; border: 1px solid #e5e7eb; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+            <h3 style="margin-bottom: 1.5rem; color: var(--bps-green);">Penilaian Kualitas Pelayanan</h3>
+            <p style="margin-bottom: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                Berikan nilai antara <strong>1 (Sangat Buruk)</strong> hingga <strong>10 (Sangat Baik)</strong> untuk
+                setiap unsur pelayanan di bawah ini.
+            </p>
+
+            {% set questions = [
+            ('q1', '1. Persyaratan pelayanan yang ditetapkan mudah dipenuhi/ disiapkan oleh konsumen'),
+            ('q2', '2. Prosedur/alur pelayanan yang ditetapkan mudah diikuti/dilakukan'),
+            ('q3', '3. Jangka waktu penyelesaian pelayanan yang diterima sesuai yang ditetapkan'),
+            ('q4', '4. Biaya pelayanan yang dibayarkan sesuai dengan biaya yang ditetapkan'),
+            ('q5', '5. Produk pelayanan yang diterima sesuai dengan yang dijanjikan'),
+            ('q6', '6. Sarana dan prasarana pendukung pelayanan memberikan kenyamanan'),
+            ('q7', '7. Data BPS mudah diakses melalui fasilitas utama yang digunakan'),
+            ('q8', '8. Petugas pelayanan atau aplikasi pelayanan online merespon dengan baik'),
+            ('q9', '9. Petugas Pelayanan atau aplikasi pelayanan online mampu memberikan informasi yang jelas'),
+            ('q10', '10. Keberadaan fasilitas pengaduan PST mudah diketahui'),
+            ('q11', '11. Proses penanganan pengaduan PST mudah diketahui, jelas, dan tidak terbelit-belit'),
+            ('q12', '12. Tidak ada diskriminasi dalam pelayanan'),
+            ('q13', '13. Tidak ada penerimaan imbalan di luar ketentuan yang sudah ditetapkan dalam pelayanan'),
+            ('q14', '14. Tidak ada pungutan liar (pungli) dalam pelayanan'),
+            ('q15', '15. Tidak ada praktik pencaloan dalam pelayanan')
+            ] %}
+
+            {% for q_id, q_text in questions %}
+            <div class="form-group" style="padding-bottom: 1.5rem; border-bottom: 1px solid #f3f4f6;">
+                <label class="form-label">{{ q_text }}</label>
+                <div class="rating-group">
+                    {% for i in range(1, 11) %}
+                    <div class="rating-item">
+                        <input type="radio" id="{{ q_id }}_{{ i }}" name="{{ q_id }}" value="{{ i }}" required>
+                        <label for="{{ q_id }}_{{ i }}">{{ i }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="saran">Saran dan Masukan untuk Peningkatan Pelayanan (Opsional)</label>
+            <textarea id="saran" name="saran" class="form-control" rows="4"
+                placeholder="Tuliskan saran Anda di sini..."></textarea>
+        </div>
+
+        <div style="text-align: right; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary"
+                style="padding: 0.75rem 2rem; font-size: 1.1rem;">Submit</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

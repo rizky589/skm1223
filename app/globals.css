@@ -1,0 +1,223 @@
+@import "tailwindcss";
+
+:root {
+  --background: 219 55% 12%;
+  --foreground: 210 40% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 219 76% 24%;
+  --primary-foreground: 210 40% 98%;
+  --secondary: 24 95% 53%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 214 32% 91%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 151 65% 45%;
+  --accent-foreground: 210 40% 98%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 24 95% 53%;
+  --radius: 1.25rem;
+}
+
+* {
+  min-width: 0;
+  border-color: hsl(var(--border));
+}
+
+html {
+  max-width: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
+  padding-bottom: env(safe-area-inset-bottom);
+  color: hsl(var(--foreground));
+  background:
+    radial-gradient(circle at 16% 10%, rgba(14, 165, 233, 0.18), transparent 30rem),
+    radial-gradient(circle at 84% 14%, rgba(249, 115, 22, 0.16), transparent 28rem),
+    radial-gradient(circle at 58% 88%, rgba(16, 185, 129, 0.12), transparent 30rem),
+    linear-gradient(145deg, rgba(6, 21, 45, 0.42) 0%, rgba(11, 42, 91, 0.34) 46%, rgba(7, 17, 31, 0.54) 100%);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+}
+
+body::before {
+  background-image: url("public/bg.jpg");
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  content: "";
+  background-image: url("/bg.jpg");
+  background-position: center;
+  background-size: cover;
+  filter: blur(3px) saturate(0.98);
+  transform: scale(1.015);
+  opacity: 0.72;
+}
+
+body::after {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  background:
+    linear-gradient(180deg, rgba(6, 21, 45, 0.2), rgba(6, 21, 45, 0.38)),
+    radial-gradient(circle at 50% 0%, rgba(14, 165, 233, 0.12), transparent 42rem);
+}
+
+a,
+button,
+[role="button"],
+input[type="radio"],
+select {
+  cursor: pointer;
+}
+
+input,
+textarea {
+  cursor: text;
+}
+
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #f97316, #38bdf8);
+  box-shadow: 0 0 18px rgba(249, 115, 22, 0.65);
+}
+
+.glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.56));
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  box-shadow: 0 24px 80px rgba(2, 8, 23, 0.22);
+  backdrop-filter: blur(18px);
+}
+
+.soft-glow {
+  box-shadow: 0 24px 70px rgba(14, 165, 233, 0.22);
+}
+
+.premium-card-hover {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 220ms ease,
+    border-color 220ms ease,
+    box-shadow 220ms ease,
+    background 220ms ease;
+}
+
+.premium-card-hover::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: linear-gradient(135deg, rgba(249, 115, 22, 0.16), rgba(14, 165, 233, 0.13), rgba(16, 185, 129, 0.11));
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.premium-card-hover:hover {
+  transform: translateY(-6px);
+  border-color: rgba(249, 115, 22, 0.5);
+  box-shadow: 0 28px 90px rgba(14, 165, 233, 0.18), 0 0 0 1px rgba(249, 115, 22, 0.12);
+}
+
+.premium-card-hover:hover::before {
+  opacity: 1;
+}
+
+.premium-card-hover > * {
+  position: relative;
+  z-index: 1;
+}
+
+@property --login-glow-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.glowing-login-box {
+  position: relative;
+  isolation: isolate;
+  border-radius: 2rem;
+  filter: drop-shadow(0 24px 60px rgba(2, 8, 23, 0.42));
+}
+
+.glowing-login-box::before,
+.glowing-login-box::after {
+  position: absolute;
+  inset: -2px;
+  z-index: -2;
+  content: "";
+  border-radius: inherit;
+  background: repeating-conic-gradient(
+    from var(--login-glow-angle),
+    #38bdf8 0%,
+    #38bdf8 6%,
+    transparent 6%,
+    transparent 38%,
+    #f97316 50%
+  );
+  animation: login-rotating 5s linear infinite;
+}
+
+.glowing-login-box::after {
+  z-index: -1;
+  background: repeating-conic-gradient(
+    from var(--login-glow-angle),
+    #22c55e 0%,
+    #22c55e 6%,
+    transparent 6%,
+    transparent 38%,
+    #38bdf8 50%
+  );
+  animation-delay: -1.25s;
+  filter: blur(14px);
+  opacity: 0.68;
+}
+
+.glowing-login-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: calc(2rem - 4px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background:
+    linear-gradient(145deg, rgba(8, 22, 48, 0.92), rgba(14, 38, 80, 0.86)),
+    rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 12px 28px rgba(2, 8, 23, 0.38);
+  backdrop-filter: blur(18px);
+}
+
+.glowing-login-inner::before {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  background: radial-gradient(circle at 50% 0%, rgba(56, 189, 248, 0.22), transparent 18rem);
+}
+
+@keyframes login-rotating {
+  0% {
+    --login-glow-angle: 0deg;
+  }
+
+  100% {
+    --login-glow-angle: 360deg;
+  }
+}
