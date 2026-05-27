@@ -52,6 +52,10 @@ export async function getSurveyResponses() {
 }
 
 export async function getSurveyStats() {
-  const responses = await getSurveyResponses();
-  return calculateStats(responses);
+  try {
+    const responses = await getSurveyResponses();
+    return calculateStats(responses);
+  } catch {
+    return emptyStats;
+  }
 }

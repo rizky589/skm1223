@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { ArrowLeft, LockKeyhole } from "lucide-react";
+import { Eye, EyeOff, LockKeyhole } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -15,6 +14,7 @@ export function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,13 +45,6 @@ export function LoginForm() {
       animate={{ opacity: 1, y: 0 }}
       className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center"
     >
-      <Button asChild variant="outline" className="mb-5 w-fit">
-        <Link href="/">
-          <ArrowLeft className="h-4 w-4" />
-          Beranda
-        </Link>
-      </Button>
-
       <div className="glowing-login-box">
         <div className="glowing-login-inner p-6 sm:p-8">
           <div className="relative mb-7 flex items-start justify-between gap-4">
@@ -78,14 +71,27 @@ export function LoginForm() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="password" className="text-white/85">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-                className="border-white/35 bg-white/10 text-white placeholder:text-white/45 focus:border-sky-300"
-                required
-              />
+              <div className="relative">
+                <Input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  className="border-white/35 bg-white/10 pr-12 text-white placeholder:text-white/45 focus:border-sky-300"
+                  required
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-1.5 top-1/2 h-9 w-9 -translate-y-1/2 rounded-xl text-white/75 hover:bg-white/10 hover:text-white"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? "Sembunyikan password" : "Tampilkan password"}
+                  aria-pressed={showPassword}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </Button>
+              </div>
             </div>
             <Button type="submit" size="lg" className="w-full rounded-3xl shadow-sky-400/20 hover:shadow-sky-300/40" disabled={loading}>
               <LockKeyhole className="h-5 w-5" />
